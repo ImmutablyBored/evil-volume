@@ -1,0 +1,88 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unreasonable Volume</title>
+<style>
+  /* Everything you make goes inside #stage: exactly 800 × 400 pixels. The gallery shows
+     this box (shrunk to fit), so anything outside it won't be seen. */
+  html, body { margin: 0; background: #292b47; color: #eceae3; font: 16px/1.5 ui-monospace, Menlo, Consolas, monospace; }
+  #stage {
+    width: 800px; height: 400px; overflow: hidden; position: relative;
+    display: grid; place-items: center; text-align: center;
+    background: #23243d;
+  }
+
+  /* Volume control */
+  .vol { font-size: 64px; line-height: 1.1; margin: 0; }
+  button { font: inherit; color: inherit; background: #3f4168; border: 0; border-radius: 6px; padding: .6rem 1.2rem; cursor: pointer; }
+  #lower { display: inline-grid; justify-items: center; gap: .35rem; padding: .35rem .35rem .5rem; }
+  #lower img { display: block; width: 350px; height: 210px; object-fit: cover; border-radius: 4px; }
+  #lower:hover { background: #50537f; }
+  #lower:active { transform: scale(.96); }
+  #lower:focus-visible { outline: 2px solid #eceae3; outline-offset: 4px; }
+  .hint { color: #8d8aa6; font-size: 14px; margin: .6rem 0 0; }
+  #sound-status { margin: .35rem 0 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div>
+    <p class="vol"><span id="vol">0</span>%</p>
+    <button id="lower" type="button">
+      <img src="mm_axolotl_header.jpg" alt="" draggable="false">
+      <span>Volume Down</span>
+    </button>
+    <p class="hint">It keeps getting louder.</p>
+    <audio id="track" loop></audio>
+    <p id="sound-status" role="status" hidden></p>
+  </div>
+</div>
+<script>
+  let volume = 0;
+  const out = document.getElementById('vol');
+  const track = document.getElementById('track');
+  const soundStatus = document.getElementById('sound-status');
+
+  function setVolume(value) {
+    volume = Math.max(0, Math.min(100, value));
+    out.textContent = volume;
+    track.volume = volume / 100;
+  }
+
+  async function startMusic() {
+    if (!track.paused) return;
+
+    try {
+      await track.play();
+      soundStatus.hidden = true;
+    } catch (error) {
+      const message = error.name === 'NotAllowedError'
+        ? 'Click the axolotl to start the song.'
+        : 'Could not play the MP3.';
+      showSoundStatus(message);
+    }
+  }
+
+  function showSoundStatus(message) {
+    soundStatus.textContent = message;
+    soundStatus.hidden = false;
+  }
+
+  setVolume(0);
+  track.addEventListener('error', () => showSoundStatus('Could not play the MP3.'));
+  document.getElementById('lower').addEventListener('click', () => {
+    setVolume(volume - 7);
+    startMusic();
+  });
+  setInterval(() => setVolume(volume + 1), 12);
+  const tracks = [
+    'Janji%20-%20Heroes%20Tonight%20(feat.%20Johnning)%20%5BNCS%20Release%5D.mp3',
+    'tung-tung-sahur.mp3',
+  ];
+  track.src = tracks[Math.floor(Math.random() * tracks.length)];
+  startMusic();
+</script>
+</body>
+</html>
