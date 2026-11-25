@@ -1,10 +1,17 @@
-﻿# Heroes tonight - you're going to listen to it even if you don't want to 
 
-## Description: 
+# Kind of evil button - plays a decent song, and one even better. 
+## description
 
-The volume rises by 1 percentage point every 12 ms. Each click on the axolotl lowers it by 7 points.
+### what is it
 
-The Audio is tung tung tung sahur and heroes tonight, ona  50/50 roll. Peak. 
+evil audio button, blasts songs at very loud volumes, one is meant to be kind of earrape. Have fun!
+
+### Input collected
+it takes in your clicks to decrease the volume, the button itself however keeps on increasing the audio. 
+The output is very loud. 
+
+## <img width="1170" height="500" alt="mm_axolotl_header" src="https://github.com/user-attachments/assets/ed7afe0d-6011-43e0-810f-db182bb596fe" />
+
 
 
 
